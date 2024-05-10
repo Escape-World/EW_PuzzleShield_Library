@@ -41,7 +41,7 @@ class PuzzleShield {
 public:
   PuzzleShield();
   void begin();
-  void setI2CAddress(uint8_t address);
+  void selectI2C(uint8_t address);
   void writeI2C(uint8_t address, uint8_t data);
   void readI2C(uint8_t address, uint8_t* data, uint8_t length);
   void setRelay(uint8_t relay, bool state);

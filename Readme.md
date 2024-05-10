@@ -32,14 +32,14 @@ PuzzleShield puzzleShield;
 void setup() {
   puzzleShield.begin();
 
-  // Set the I2C address of the PuzzleShield module
-  puzzleShield.setI2CAddress(0x00);
+  // Select bus 2 of I2C multiplexer
+  puzzleShield.selectI2C(2);
 
   // Set the color of the LED strip
   puzzleShield.setLEDStrip(1, 0xFF0000);
 
   // Set the state of the relay
-  puzzleShield.setRelay(1, true);
+  puzzleShield.setRelay(1, HIGH);
 }
 
 void loop() {

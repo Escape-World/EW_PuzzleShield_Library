@@ -14,7 +14,8 @@
     ],
     "dependencies": {
         "adafruit/Adafruit NeoPixel": "@^1.12.2",
-	    "dfrobot/DFRobotDFPlayerMini": "@^1.0.6"
+	    "dfrobot/DFRobotDFPlayerMini": "@^1.0.6",
+        "robtillaart/TCA9548": "@ ^0.3.0"
     },
 
     "frameworks": "*",
