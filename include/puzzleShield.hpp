@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
-#include <Adafruit_DFPlayer.h>
+#include "DFRobotDFPlayerMini.h"
 
 // I2C Multiplexer
 #define TCA9548A_ADDR 0x70
