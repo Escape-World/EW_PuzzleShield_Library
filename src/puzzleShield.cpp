@@ -1,12 +1,13 @@
 #include "puzzleShield.h"
 
-PuzzleShield::PuzzleShield()
-  : ledStrip1(1, LED_STRIP1, NEO_GRB + NEO_KHZ800),
-    ledStrip2(1, LED_STRIP2, NEO_GRB + NEO_KHZ800),
-    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800) {
+PuzzleShield::PuzzleShield(uint16_t ledCount1, uint16_t ledCount2)
+  : ledStrip1(ledCount1, LED_STRIP1, NEO_GRB + NEO_KHZ800),
+    ledStrip2(ledCount2, LED_STRIP2, NEO_GRB + NEO_KHZ800),
+    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800),
+    dfplayerSerial(DFPLAYER_RX, DFPLAYER_TX) {
 
   // Initialize I2C
-  Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.begin();
   Wire.setClock(400000);
 
   // Initialize LED strips
@@ -15,7 +16,8 @@ PuzzleShield::PuzzleShield()
   statusLed.begin();
 
   // Initialize DFPlayer Mini
-  dfplayer.begin(DFPLAYER_RX, DFPLAYER_TX);
+  dfplayerSerial.begin(9600);
+  dfplayer.begin(dfplayerSerial);
 
   // Set initial status LED color (off)
   setStatusLEDColor(0, 0, 0);
@@ -23,7 +25,7 @@ PuzzleShield::PuzzleShield()
 
 void PuzzleShield::begin() {
   // Set default I2C address
-  setI2CAddress(0x00);
+  selectI2C(0x00);
 }
 
 void PuzzleShield::selectI2C(uint8_t address) {
@@ -61,16 +63,20 @@ void PuzzleShield::setDigitalPin(uint8_t pin, bool state) {
 void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t red, uint8_t green, uint8_t blue) {
   uint32_t color = convertRGBToColor(red, green, blue);
   if (strip == 1) {
-    ledStrip1.setPixelColor(0, color);
+    for (uint16_t i = 0; i < ledStrip1.numPixels(); i++) {
+      ledStrip1.setPixelColor(i, color);
+    }
     ledStrip1.show();
   } else if (strip == 2) {
-    ledStrip2.setPixelColor(0, color);
+    for (uint16_t i = 0; i < ledStrip2.numPixels(); i++) {
+      ledStrip2.setPixelColor(i, color);
+    }
     ledStrip2.show();
   }
 }
 
 void PuzzleShield::setDFPlayerVolume(uint8_t volume) {
-  dfplayer.setVolume(volume);
+  dfplayer.volume(volume);
 }
 
 void PuzzleShield::playDFPlayerTrack(uint8_t track) {
