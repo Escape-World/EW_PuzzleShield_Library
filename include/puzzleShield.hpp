@@ -36,6 +36,14 @@
 #define DFPLAYER_RX 18
 #define DFPLAYER_TX 19
 
+// Buttons
+#define START_BTN 8
+#define RESET_BTN 9
+#define SOLVE_BTN 11
+
+// WS2812B Status LED
+#define STATUS_LED 13
+
 // Classes
 class PuzzleShield {
 public:
@@ -46,14 +54,23 @@ public:
   void readI2C(uint8_t address, uint8_t* data, uint8_t length);
   void setRelay(uint8_t relay, bool state);
   void setDigitalPin(uint8_t pin, bool state);
-  void setLEDStrip(uint8_t strip, uint32_t color);
+  void setLEDStrip(uint8_t strip, uint8_t red, uint8_t green, uint8_t blue);
   void setDFPlayerVolume(uint8_t volume);
   void playDFPlayerTrack(uint8_t track);
   void stopDFPlayer();
+  void startPuzzle();
+  void solvePuzzle();
+  void resetPuzzle();
+  void loop();
+
 private:
   Adafruit_NeoPixel ledStrip1;
   Adafruit_NeoPixel ledStrip2;
-  Adafruit_DFPlayer dfplayer;
+  Adafruit_NeoPixel statusLed;
+  DFRobotDFPlayerMini dfplayer;
+
+  void setStatusLEDColor(uint8_t red, uint8_t green, uint8_t blue);
+  uint32_t convertRGBToColor(uint8_t red, uint8_t green, uint8_t blue);
 };
 
 #endif

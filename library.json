@@ -15,7 +15,8 @@
     "dependencies": {
         "adafruit/Adafruit NeoPixel": "@^1.12.2",
 	    "dfrobot/DFRobotDFPlayerMini": "@^1.0.6",
-        "robtillaart/TCA9548": "@ ^0.3.0"
+        "robtillaart/TCA9548": "@ ^0.3.0",
+        "external-repo": "https://github.com/Escape-World/EscapeLogic-Device-Client-v2.git"
     },
 
     "frameworks": "*",

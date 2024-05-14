@@ -1,19 +1,24 @@
 #include "puzzleShield.h"
 
-PuzzleShield::PuzzleShield() {
+PuzzleShield::PuzzleShield()
+  : ledStrip1(1, LED_STRIP1, NEO_GRB + NEO_KHZ800),
+    ledStrip2(1, LED_STRIP2, NEO_GRB + NEO_KHZ800),
+    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800) {
+
   // Initialize I2C
   Wire.begin(I2C_SDA, I2C_SCL);
   Wire.setClock(400000);
 
-  // Initialize WS2801
-  ws2801.begin();
-
   // Initialize LED strips
   ledStrip1.begin();
   ledStrip2.begin();
+  statusLed.begin();
 
   // Initialize DFPlayer Mini
   dfplayer.begin(DFPLAYER_RX, DFPLAYER_TX);
+
+  // Set initial status LED color (off)
+  setStatusLEDColor(0, 0, 0);
 }
 
 void PuzzleShield::begin() {
@@ -53,7 +58,8 @@ void PuzzleShield::setDigitalPin(uint8_t pin, bool state) {
   digitalWrite(pin, state);
 }
 
-void PuzzleShield::setLEDStrip(uint8_t strip, uint32_t color) {
+void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t red, uint8_t green, uint8_t blue) {
+  uint32_t color = convertRGBToColor(red, green, blue);
   if (strip == 1) {
     ledStrip1.setPixelColor(0, color);
     ledStrip1.show();
@@ -73,4 +79,43 @@ void PuzzleShield::playDFPlayerTrack(uint8_t track) {
 
 void PuzzleShield::stopDFPlayer() {
   dfplayer.stop();
+}
+
+void PuzzleShield::startPuzzle() {
+  setStatusLEDColor(0, 0, 255); // Blue for started
+  EscapeLogicClient::puzzleStart();
+}
+
+void PuzzleShield::solvePuzzle() {
+  setStatusLEDColor(0, 255, 0); // Green for solved
+  EscapeLogicClient::puzzleSolved();
+}
+
+void PuzzleShield::resetPuzzle() {
+  setStatusLEDColor(255, 0, 0); // Red for reset
+  EscapeLogicClient::puzzleReset();
+}
+
+void PuzzleShield::loop() {
+  if (digitalRead(START_BTN) == HIGH) {
+    startPuzzle();
+  }
+  if (digitalRead(RESET_BTN) == HIGH) {
+    resetPuzzle();
+  }
+  if (digitalRead(SOLVE_BTN) == HIGH) {
+    solvePuzzle();
+  }
+
+  EscapeLogicClient::loop();
+}
+
+void PuzzleShield::setStatusLEDColor(uint8_t red, uint8_t green, uint8_t blue) {
+  uint32_t color = convertRGBToColor(red, green, blue);
+  statusLed.setPixelColor(0, color);
+  statusLed.show();
+}
+
+uint32_t PuzzleShield::convertRGBToColor(uint8_t red, uint8_t green, uint8_t blue) {
+  return ((uint32_t)red << 16) | ((uint32_t)green << 8) | blue;
 }
