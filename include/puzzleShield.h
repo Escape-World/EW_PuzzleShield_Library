@@ -47,7 +47,7 @@
 // Classes
 class PuzzleShield {
 public:
-  PuzzleShield(uint16_t ledCount1, uint16_t ledCount2);
+  PuzzleShield();
   void begin();
   void selectI2C(uint8_t address);
   void writeI2C(uint8_t address, uint8_t data);
