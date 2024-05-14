@@ -16,7 +16,9 @@
         "adafruit/Adafruit NeoPixel": "@^1.12.2",
 	    "dfrobot/DFRobotDFPlayerMini": "@^1.0.6",
         "robtillaart/TCA9548": "@ ^0.3.0",
-        "EscapeLogic": "https://github.com/Escape-World/EscapeLogic-Device-Client-v2.git"
+        "EscapeLogic": "https://github.com/Escape-World/EscapeLogic-Device-Client-v2.git",
+        "arduino-libraries/Ethernet": "@^2.0.2", 
+	    "256dpi/MQTT": "^2.5.0"
     },
 
     "frameworks": "*",
