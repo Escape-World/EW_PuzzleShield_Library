@@ -3,8 +3,15 @@
 PuzzleShield::PuzzleShield(uint16_t ledCount1, uint16_t ledCount2)
   : ledStrip1(ledCount1, LED_STRIP1, NEO_GRB + NEO_KHZ800),
     ledStrip2(ledCount2, LED_STRIP2, NEO_GRB + NEO_KHZ800),
-    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800),
-    dfplayerSerial(DFPLAYER_RX, DFPLAYER_TX) {
+    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800) {
+
+  // Initialize pins
+  pinMode(START_BTN, INPUT_PULLUP);
+  pinMode(RESET_BTN, INPUT_PULLUP);
+  pinMode(SOLVE_BTN, INPUT_PULLUP);
+  pinMode(LED_STRIP1, OUTPUT);
+  pinMode(LED_STRIP2, OUTPUT);
+  pinMode(STATUS_LED, OUTPUT);
 
   // Initialize I2C
   Wire.begin();
@@ -16,8 +23,17 @@ PuzzleShield::PuzzleShield(uint16_t ledCount1, uint16_t ledCount2)
   statusLed.begin();
 
   // Initialize DFPlayer Mini
-  dfplayerSerial.begin(9600);
-  dfplayer.begin(dfplayerSerial);
+  #define FPSerial Serial1
+  FPSerial.begin(9600);
+  if (!dfplayer.begin(FPSerial, /*isACK = */true, /*doReset = */true)) {  //Use serial to communicate with mp3.
+    Serial.println(F("Unable to begin:"));
+    Serial.println(F("1.Please recheck the connection!"));
+    Serial.println(F("2.Please insert the SD card!"));
+    while(true);
+  }
+  Serial.println(F("DFPlayer Mini online."));
+  
+  dfplayer.setTimeOut(500);
 
   // Set initial status LED color (off)
   setStatusLEDColor(0, 0, 0);
@@ -109,8 +125,6 @@ void PuzzleShield::loop() {
   if (digitalRead(SOLVE_BTN) == HIGH) {
     solvePuzzle();
   }
-
-  EscapeLogicClient::loop();
 }
 
 void PuzzleShield::setStatusLEDColor(uint8_t red, uint8_t green, uint8_t blue) {
