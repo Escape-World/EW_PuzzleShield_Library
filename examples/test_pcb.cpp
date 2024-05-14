@@ -1,9 +1,40 @@
+#include <Arduino.h>
 #include "puzzleShield.h"
+
+#define DEVICE_NAME "puzzle1"
+byte mac[] = {0xDE, 0xAB, 0xCE, 0xFE, 0xFE, 0xFA}; // Change to a random MAC address.
+IPAddress server(192, 168, 68, 148);			   // Server IP address
 
 #define LED_COUNT1 30  // Number of LEDs in the first strip
 #define LED_COUNT2 30  // Number of LEDs in the second strip
 
 PuzzleShield puzzleShield(LED_COUNT1, LED_COUNT2);
+
+void puzzleStart()
+{
+	EscapeLogicClient::log("Puzzle start..");
+	Serial.println("Puzzle Start");
+}
+
+// Called when the server wants every device to reset.
+void resetEverything()
+{
+	EscapeLogicClient::log("Reset everything..");
+}
+
+// Loop function, called repeatedly, like void loop(),
+// but only when in puzzle mode.
+void puzzleLoop()
+{
+    Serial.println("Puzzle Loop");
+}
+
+// Called when the puzzle is solved.
+void puzzleSolved()
+{
+
+	EscapeLogicClient::log("Puzzle finished.");
+}
 
 void setup() {
   Serial.begin(9600);

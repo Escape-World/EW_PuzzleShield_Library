@@ -89,17 +89,14 @@ void PuzzleShield::stopDFPlayer() {
 
 void PuzzleShield::startPuzzle() {
   setStatusLEDColor(0, 0, 255); // Blue for started
-  EscapeLogicClient::puzzleStart();
 }
 
 void PuzzleShield::solvePuzzle() {
   setStatusLEDColor(0, 255, 0); // Green for solved
-  EscapeLogicClient::puzzleSolved();
 }
 
 void PuzzleShield::resetPuzzle() {
   setStatusLEDColor(255, 0, 0); // Red for reset
-  EscapeLogicClient::puzzleReset();
 }
 
 void PuzzleShield::loop() {
