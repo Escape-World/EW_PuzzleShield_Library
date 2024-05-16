@@ -4,6 +4,9 @@ PuzzleShield::PuzzleShield()
   : ledStrip1(100, LED_STRIP1, NEO_GRB + NEO_KHZ800),
     ledStrip2(100, LED_STRIP2, NEO_GRB + NEO_KHZ800),
     statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800) {
+  for (int i = 0; i < 8; i++) {
+    nfcSensors[i] = nullptr;
+  }
 }
 
 void PuzzleShield::begin() {
@@ -42,6 +45,53 @@ void PuzzleShield::begin() {
 
   // Set initial status LED color (off)
   setStatusLEDColor(0, 0, 0);
+
+  // Initialize NFC sensors
+  initializeNFC();
+}
+
+bool PuzzleShield::initializeNFC() {
+  uint8_t csPins[] = {NFC_CS1, NFC_CS2, NFC_CS3, NFC_CS4, NFC_CS5, NFC_CS6, NFC_CS7, NFC_CS8};
+
+  for (int i = 0; i < 8; i++) {
+    nfcSensors[i] = new Adafruit_PN532(NFC_SCK, NFC_MISO, NFC_MOSI, csPins[i]);
+    nfcSensors[i]->begin();
+    uint32_t versiondata = nfcSensors[i]->getFirmwareVersion();
+    if (!versiondata) {
+      Serial.print(F("Didn't find PN53x board #"));
+      Serial.println(i + 1);
+      return false;
+    }
+
+    nfcSensors[i]->SAMConfig();
+  }
+  return true;
+}
+
+bool PuzzleShield::readNFC(uint8_t sensorIndex, uint8_t *uid, uint8_t *uidLength) {
+  if (sensorIndex >= 8 || nfcSensors[sensorIndex] == nullptr) {
+    return false;
+  }
+
+  if (nfcSensors[sensorIndex]->readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, uidLength)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool PuzzleShield::matchNFCUUID(uint8_t *readUUID, uint8_t readLength, uint8_t *specifiedUUID, uint8_t specifiedLength) {
+  if (readLength != specifiedLength) {
+    return false;
+  }
+
+  for (uint8_t i = 0; i < readLength; i++) {
+    if (readUUID[i] != specifiedUUID[i]) {
+      return false;
+    }
+  }
+  
+  return true;
 }
 
 void PuzzleShield::selectI2C(uint8_t address) {
