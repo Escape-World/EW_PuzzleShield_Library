@@ -126,16 +126,18 @@ void PuzzleShield::setDigitalPin(uint8_t pin, bool state) {
   digitalWrite(pin, state);
 }
 
-void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t red, uint8_t green, uint8_t blue) {
+void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t brightness, uint8_t red, uint8_t green, uint8_t blue) {
   uint32_t color = convertRGBToColor(red, green, blue);
   if (strip == 1) {
     for (uint16_t i = 0; i < ledStrip1.numPixels(); i++) {
       ledStrip1.setPixelColor(i, color);
+      ledStrip1.setBrightness(brightness);
     }
     ledStrip1.show();
   } else if (strip == 2) {
     for (uint16_t i = 0; i < ledStrip2.numPixels(); i++) {
       ledStrip2.setPixelColor(i, color);
+      ledStrip2.setBrightness(brightness);
     }
     ledStrip2.show();
   }
