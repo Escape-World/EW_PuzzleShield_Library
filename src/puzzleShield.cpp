@@ -1,9 +1,9 @@
 #include "puzzleShield.h"
 
-PuzzleShield::PuzzleShield()
-  : ledStrip1(100, LED_STRIP1, NEO_GRB + NEO_KHZ800),
-    ledStrip2(100, LED_STRIP2, NEO_GRB + NEO_KHZ800),
-    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800) {
+PuzzleShield::PuzzleShield(uint16_t numLedsStrip1, uint16_t numLedsStrip2, uint16_t numStatusLeds)
+  : ledStrip1(numLedsStrip1, LED_STRIP1, NEO_GRB + NEO_KHZ800),
+    ledStrip2(numLedsStrip2, LED_STRIP2, NEO_GRB + NEO_KHZ800),
+    statusLed(numStatusLeds, STATUS_LED, NEO_GRB + NEO_KHZ800) {
   for (int i = 0; i < 8; i++) {
     nfcSensors[i] = nullptr;
   }
