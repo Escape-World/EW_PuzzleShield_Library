@@ -1,6 +1,9 @@
 #include <puzzleShield.h>
 
-PuzzleShield puzzleShield;
+#define NUM_LEDS_STRIP_1 0
+#define NUM_LEDS_STRIP_2 0
+
+PuzzleShield puzzleShield(NUM_LEDS_STRIP_1, NUM_LEDS_STRIP_2);
 
 uint8_t specifiedUUID[] = {0x04, 0x25, 0x85, 0x64, 0xE0, 0x27, 0x80}; // Example UUID to match
 

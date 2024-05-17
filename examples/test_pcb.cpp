@@ -7,7 +7,10 @@
 byte mac[] = {0xDE, 0xAB, 0xCE, 0xFE, 0xFE, 0xFA}; // Change to a random MAC address.
 IPAddress server(192, 168, 68, 148);			   // Server IP address
 
-PuzzleShield puzzleShield;
+#define NUM_LEDS_STRIP_1 0
+#define NUM_LEDS_STRIP_2 0
+
+PuzzleShield puzzleShield(NUM_LEDS_STRIP_1, NUM_LEDS_STRIP_2);
 
 void puzzleStart()
 {
