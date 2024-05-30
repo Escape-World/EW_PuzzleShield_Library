@@ -63,7 +63,7 @@
 
 class PuzzleShield {
 public:
-  PuzzleShield();
+  PuzzleShield(uint16_t numLedsStrip1, uint16_t numLedsStrip2);
   void begin();
   void selectI2C(uint8_t address);
   void writeI2C(uint8_t address, uint8_t data);
