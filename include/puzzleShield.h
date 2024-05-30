@@ -35,8 +35,8 @@
 #define LED_STRIP2 37
 
 // DFPlayer Mini
-#define DFPLAYER_RX 18
-#define DFPLAYER_TX 19
+#define DFPLAYER_TX 18
+#define DFPLAYER_RX 19
 
 // Buttons
 #define START_BTN 8

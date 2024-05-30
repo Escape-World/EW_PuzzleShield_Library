@@ -34,9 +34,7 @@ void PuzzleShield::begin() {
 
   // Initialize DFPlayer Mini
   dfSerial.begin(9600);
-  if(dfPlayer.begin(dfSerial, true)) {
-    Serial.println("DFPlayer Mini online.");
-  }
+  dfPlayer.begin(dfSerial, true);
 
   Serial.println("Scanning I2C devices...");
   for (uint8_t i = 0; i < 8; i++)
