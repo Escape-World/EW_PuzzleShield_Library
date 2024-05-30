@@ -1,9 +1,11 @@
 #include "puzzleShield.h"
 
-PuzzleShield::PuzzleShield(uint16_t numLedsStrip1, uint16_t numLedsStrip2, uint16_t numStatusLeds)
-  : ledStrip1(numLedsStrip1, LED_STRIP1, NEO_GRB + NEO_KHZ800),
-    ledStrip2(numLedsStrip2, LED_STRIP2, NEO_GRB + NEO_KHZ800),
-    statusLed(numStatusLeds, STATUS_LED, NEO_GRB + NEO_KHZ800) {
+PuzzleShield::PuzzleShield()
+  : ledStrip1(100, LED_STRIP1, NEO_GRB + NEO_KHZ800),
+    ledStrip2(100, LED_STRIP2, NEO_GRB + NEO_KHZ800),
+    statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800),
+    mySerial(DFPLAYER_RX, DFPLAYER_TX)  
+{
   for (int i = 0; i < 8; i++) {
     nfcSensors[i] = nullptr;
   }
@@ -31,9 +33,8 @@ void PuzzleShield::begin() {
   statusLed.begin();
 
   // Initialize DFPlayer Mini
-  #define FPSerial Serial1
-  FPSerial.begin(9600);
-  if (!dfplayer.begin(FPSerial, /*isACK = */true, /*doReset = */true)) {  //Use serial to communicate with mp3.
+  mySerial.begin(9600);
+  if (!dfplayer.begin(mySerial, /*isACK = */true, /*doReset = */true)) {  // Use SoftwareSerial to communicate with mp3
     Serial.println(F("Unable to begin DFPlayer:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
@@ -43,12 +44,27 @@ void PuzzleShield::begin() {
   
   dfplayer.setTimeOut(500);
 
+  Serial.println("Scanning I2C devices...");
+  for (uint8_t i = 0; i < 8; i++)
+  {
+    selectI2C(i);
+    Wire.beginTransmission(TCA9548A_ADDR);
+    if (Wire.endTransmission() == 0)
+    {
+      Serial.print("Device found at channel: ");
+      Serial.println(i);
+    }
+  }
+  Serial.println("Scan complete.");
+
   // Set initial status LED color (off)
   setStatusLEDColor(0, 0, 0);
 
   // Initialize NFC sensors
   initializeNFC();
 }
+
+// Rest of your code remains the same...
 
 bool PuzzleShield::initializeNFC() {
   uint8_t csPins[] = {NFC_CS1, NFC_CS2, NFC_CS3, NFC_CS4, NFC_CS5, NFC_CS6, NFC_CS7, NFC_CS8};
@@ -60,7 +76,6 @@ bool PuzzleShield::initializeNFC() {
     if (!versiondata) {
       Serial.print(F("Didn't find PN53x board #"));
       Serial.println(i + 1);
-      return false;
     }
 
     nfcSensors[i]->SAMConfig();
@@ -138,6 +153,7 @@ void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t brightness, uint8_t red, u
     for (uint16_t i = 0; i < ledStrip2.numPixels(); i++) {
       ledStrip2.setPixelColor(i, color);
       ledStrip2.setBrightness(brightness);
+
     }
     ledStrip2.show();
   }
@@ -168,13 +184,13 @@ void PuzzleShield::resetPuzzle() {
 }
 
 void PuzzleShield::loop() {
-  if (digitalRead(START_BTN) == HIGH) {
+  if (digitalRead(START_BTN) == LOW) {
     startPuzzle();
   }
-  if (digitalRead(RESET_BTN) == HIGH) {
+  if (digitalRead(RESET_BTN) == LOW) {
     resetPuzzle();
   }
-  if (digitalRead(SOLVE_BTN) == HIGH) {
+  if (digitalRead(SOLVE_BTN) == LOW) {
     solvePuzzle();
   }
 }

@@ -6,6 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 #include <DFRobotDFPlayerMini.h>
 #include <Adafruit_PN532.h>
+#include <SoftwareSerial.h>  // Include SoftwareSerial
 
 // I2C Multiplexer
 #define TCA9548A_ADDR 0x70
@@ -62,7 +63,7 @@
 
 class PuzzleShield {
 public:
-  PuzzleShield(uint16_t numLedsStrip1, uint16_t numLedsStrip2, uint16_t numStatusLeds = 1);
+  PuzzleShield();
   void begin();
   void selectI2C(uint8_t address);
   void writeI2C(uint8_t address, uint8_t data);
@@ -89,6 +90,7 @@ private:
   Adafruit_NeoPixel statusLed;
   DFRobotDFPlayerMini dfplayer;
   Adafruit_PN532 *nfcSensors[8];
+  SoftwareSerial mySerial;  // Declare SoftwareSerial instance
 
   void setStatusLEDColor(uint8_t red, uint8_t green, uint8_t blue);
   uint32_t convertRGBToColor(uint8_t red, uint8_t green, uint8_t blue);
