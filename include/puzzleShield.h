@@ -35,8 +35,8 @@
 #define LED_STRIP2 37
 
 // DFPlayer Mini
-#define DFPLAYER_RX 18
-#define DFPLAYER_TX 19
+static const uint8_t DFPLAYER_RX = 18;
+static const uint8_t DFPLAYER_TX = 19;
 
 // Buttons
 #define START_BTN 8
@@ -90,7 +90,7 @@ private:
   Adafruit_NeoPixel statusLed;
   DFRobotDFPlayerMini dfplayer;
   Adafruit_PN532 *nfcSensors[8];
-  SoftwareSerial mySerial;  // Declare SoftwareSerial instance
+  SoftwareSerial dfSerial;  
 
   void setStatusLEDColor(uint8_t red, uint8_t green, uint8_t blue);
   uint32_t convertRGBToColor(uint8_t red, uint8_t green, uint8_t blue);

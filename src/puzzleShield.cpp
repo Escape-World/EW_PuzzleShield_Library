@@ -4,7 +4,7 @@ PuzzleShield::PuzzleShield()
   : ledStrip1(100, LED_STRIP1, NEO_GRB + NEO_KHZ800),
     ledStrip2(100, LED_STRIP2, NEO_GRB + NEO_KHZ800),
     statusLed(1, STATUS_LED, NEO_GRB + NEO_KHZ800),
-    mySerial(DFPLAYER_RX, DFPLAYER_TX)  
+    dfSerial(DFPLAYER_RX, DFPLAYER_TX)  
 {
   for (int i = 0; i < 8; i++) {
     nfcSensors[i] = nullptr;
@@ -33,8 +33,8 @@ void PuzzleShield::begin() {
   statusLed.begin();
 
   // Initialize DFPlayer Mini
-  mySerial.begin(9600);
-  if (!dfplayer.begin(mySerial, /*isACK = */true, /*doReset = */true)) {  // Use SoftwareSerial to communicate with mp3
+  dfSerial.begin(9600);
+  if (!dfplayer.begin(dfSerial, /*isACK = */true, /*doReset = */true)) { 
     Serial.println(F("Unable to begin DFPlayer:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
