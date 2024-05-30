@@ -34,7 +34,7 @@ void PuzzleShield::begin() {
 
   // Initialize DFPlayer Mini
   dfSerial.begin(9600);
-  if (!dfplayer.begin(dfSerial, /*isACK = */true, /*doReset = */true)) { 
+  if (!dfplayer.begin(dfSerial)) { 
     Serial.println(F("Unable to begin DFPlayer:"));
     Serial.println(F("1.Please recheck the connection!"));
     Serial.println(F("2.Please insert the SD card!"));
