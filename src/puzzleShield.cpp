@@ -34,15 +34,8 @@ void PuzzleShield::begin() {
 
   // Initialize DFPlayer Mini
   dfSerial.begin(9600);
-  if (!dfplayer.begin(dfSerial)) { 
-    Serial.println(F("Unable to begin DFPlayer:"));
-    Serial.println(F("1.Please recheck the connection!"));
-    Serial.println(F("2.Please insert the SD card!"));
-  } else {
-    Serial.println(F("DFPlayer Mini online."));
-  }
-  
-  dfplayer.setTimeOut(500);
+  dfPlayer.begin(dfSerial, true);
+  dfPlayer.volume(20);
 
   Serial.println("Scanning I2C devices...");
   for (uint8_t i = 0; i < 8; i++)
@@ -160,15 +153,15 @@ void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t brightness, uint8_t red, u
 }
 
 void PuzzleShield::setDFPlayerVolume(uint8_t volume) {
-  dfplayer.volume(volume);
+  dfPlayer.volume(volume);
 }
 
 void PuzzleShield::playDFPlayerTrack(uint8_t track) {
-  dfplayer.play(track);
+  dfPlayer.play(track);
 }
 
 void PuzzleShield::stopDFPlayer() {
-  dfplayer.stop();
+  dfPlayer.stop();
 }
 
 void PuzzleShield::startPuzzle() {

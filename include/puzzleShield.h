@@ -4,9 +4,9 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
-#include <DFRobotDFPlayerMini.h>
+#include <DFPlayerMini_Fast.h>
 #include <Adafruit_PN532.h>
-#include <SoftwareSerial.h>  // Include SoftwareSerial
+#include <SoftwareSerial.h> 
 
 // I2C Multiplexer
 #define TCA9548A_ADDR 0x70
@@ -35,8 +35,8 @@
 #define LED_STRIP2 37
 
 // DFPlayer Mini
-static const uint8_t DFPLAYER_RX = 18;
-static const uint8_t DFPLAYER_TX = 19;
+#define DFPLAYER_RX 18
+#define DFPLAYER_TX 19
 
 // Buttons
 #define START_BTN 8
@@ -88,9 +88,10 @@ private:
   Adafruit_NeoPixel ledStrip1;
   Adafruit_NeoPixel ledStrip2;
   Adafruit_NeoPixel statusLed;
-  DFRobotDFPlayerMini dfplayer;
+  
   Adafruit_PN532 *nfcSensors[8];
-  SoftwareSerial dfSerial;  
+  SoftwareSerial dfSerial;
+  DFPlayerMini_Fast dfPlayer;
 
   void setStatusLEDColor(uint8_t red, uint8_t green, uint8_t blue);
   uint32_t convertRGBToColor(uint8_t red, uint8_t green, uint8_t blue);
