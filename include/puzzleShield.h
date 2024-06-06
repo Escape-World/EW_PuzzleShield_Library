@@ -70,10 +70,17 @@ public:
   void readI2C(uint8_t address, uint8_t* data, uint8_t length);
   void setRelay(uint8_t relay, bool state);
   void setDigitalPin(uint8_t pin, bool state);
+
+  // LED functions
   void setLEDStrip(uint8_t strip, uint8_t brightness, uint8_t red, uint8_t green, uint8_t blue);
+  void setLEDStripLED(uint8_t strip, uint8_t ledFrom, uint8_t ledTo, uint8_t red, uint8_t green, uint8_t blue);
+
+  // DFPlayer Functions
   void setDFPlayerVolume(uint8_t volume);
   void playDFPlayerTrack(uint8_t track);
   void stopDFPlayer();
+
+  // Status led
   void startPuzzle();
   void solvePuzzle();
   void resetPuzzle();
