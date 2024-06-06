@@ -151,7 +151,7 @@ void PuzzleShield::setLEDStrip(uint8_t strip, uint8_t brightness, uint8_t red, u
   }
 }
 
-void PuzzleShield::setLEDStripLED(uint8_t strip, uint8_t ledFrom, uint8_t ledTo, uint8_t red, uint8_t green, uint8_t blue) {
+void PuzzleShield::setLEDStripLED(uint8_t strip, uint8_t ledFrom, uint8_t ledTo, uint8_t brightness, uint8_t red, uint8_t green, uint8_t blue) {
   uint32_t color = convertRGBToColor(red, green, blue);
   if (strip == 1) {
     for (uint16_t i = ledFrom; i <= ledTo; i++) {

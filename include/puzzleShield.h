@@ -73,7 +73,7 @@ public:
 
   // LED functions
   void setLEDStrip(uint8_t strip, uint8_t brightness, uint8_t red, uint8_t green, uint8_t blue);
-  void setLEDStripLED(uint8_t strip, uint8_t ledFrom, uint8_t ledTo, uint8_t red, uint8_t green, uint8_t blue);
+  void setLEDStripLED(uint8_t strip, uint8_t ledFrom, uint8_t ledTo, uint8_t brightness, uint8_t red, uint8_t green, uint8_t blue);
 
   // DFPlayer Functions
   void setDFPlayerVolume(uint8_t volume);
