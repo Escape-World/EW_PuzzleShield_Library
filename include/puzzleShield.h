@@ -9,7 +9,7 @@
 #include <SoftwareSerial.h> 
 
 // I2C Multiplexer
-#define TCA9548A_ADDR 0x70
+#define TCA9548A_ADDR 0x74
 #define I2C_SDA 20
 #define I2C_SCL 21
 
