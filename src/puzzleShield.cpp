@@ -80,7 +80,7 @@ bool PuzzleShield::readNFC(uint8_t sensorIndex, uint8_t *uid, uint8_t *uidLength
     return false;
   }
 
-  if (nfcSensors[sensorIndex]->readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, uidLength)) {
+  if (nfcSensors[sensorIndex]->readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, uidLength, 100)) {
     return true;
   } else {
     return false;
