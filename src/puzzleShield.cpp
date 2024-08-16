@@ -105,7 +105,6 @@ void PuzzleShield::selectI2C(uint8_t address) {
   Wire.beginTransmission(TCA9548A_ADDR);
   Wire.write(1 << address);          // send byte to select bus
   Wire.endTransmission();
-  Serial.print(address);
 }
 
 void PuzzleShield::writeI2C(uint8_t address, uint8_t data) {
